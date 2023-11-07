@@ -9,6 +9,7 @@ public class ClickCutsceneScript : MonoBehaviour
     public LetterDialog letterdialog;
     public Sprite portrait;
     public Texture2D cursortexture;
+    public Arrow arrow;
 
     public void OnMouseEnter(){
         if(GameManager.Instance.IsPaused() == false){
@@ -19,8 +20,10 @@ public class ClickCutsceneScript : MonoBehaviour
         if(GameManager.Instance.IsPaused() == false){
            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
            letterdialog.SetDialog();
+           arrow.Remove(charname);
            GameManager.Instance.ToCutscene(dialogLines, charname, portrait);
            letterdialog.UpdateLetter();
+           arrow.Activate();
         }
         
     }
