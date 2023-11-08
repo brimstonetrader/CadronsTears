@@ -12,7 +12,7 @@ public class Arrow : MonoBehaviour
     private Vector3 personpos;
     public GameObject player;
     public GameObject arrow;
-
+    private bool here = true;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +29,8 @@ public class Arrow : MonoBehaviour
         }
     }
 
-    public void Activate() {
-     //   gameObject.SetActive(true);
+    public void Visible(bool b) {
+        here = b;
     }
 
     // Update is called once per frame
@@ -43,16 +43,21 @@ public class Arrow : MonoBehaviour
             current = null;
         }
         playerpos = player.transform.position;
-        if (current != null) {
+        if (current != null && here) {
             personpos = current.transform.position;
             Vector3 arrowdir = (personpos - playerpos).normalized;
-            int RotationY = 0;
-            int RotationX = 0;
-            int RotationZ = Convert.ToInt(Mathf.Sin(arrowdir.y) * 90f / Mathf.PI);
-            transform.eulerAngles = new Vector3(RotationX, RotationY, RotationZ);
-            transform.position = playerpos + (arrowdir / 3);
-
-            
+            int RotationZ = (int) (Vector3.Angle(arrowdir, new Vector3(1f,0f,0f)));
+            if (arrowdir.y < 0) { RotationZ = 360 - RotationZ; }
+            transform.eulerAngles = new Vector3(0, 0, RotationZ);
+            if ((personpos - playerpos).magnitude > 1f) {
+                transform.position = playerpos + (arrowdir / 2);
+            }
+            else {
+                transform.position = playerpos + (arrowdir * 10000f);
+            }            
         }
+        if (!here) {
+                transform.position = playerpos + new Vector3(10000f, 10000f, 0f);
+        } 
     }
 }

@@ -13,23 +13,24 @@ public class ClickCutsceneScript : MonoBehaviour
 
     public void OnMouseEnter(){
         if(GameManager.Instance.IsPaused() == false){
-        Cursor.SetCursor(cursortexture, Vector2.zero, CursorMode.Auto);
+            arrow.Remove(charname);
+            arrow.Visible(false);
+            Cursor.SetCursor(cursortexture, Vector2.zero, CursorMode.Auto);
         }
     }
     public void OnMouseDown(){
         if(GameManager.Instance.IsPaused() == false){
            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
            letterdialog.SetDialog();
-           arrow.Remove(charname);
            GameManager.Instance.ToCutscene(dialogLines, charname, portrait);
            letterdialog.UpdateLetter();
-           arrow.Activate();
         }
         
     }
 
     public void OnMouseExit(){
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        arrow.Visible(true);
     }
 
     // Start is called before the first frame update

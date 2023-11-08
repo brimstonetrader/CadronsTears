@@ -24706,7 +24706,7 @@ MonoBehaviour:
   letterdialog: {fileID: 848360623}
   portrait: {fileID: -452637836, guid: d843c858a4a55fa46b9db78a34317ac2, type: 3}
   cursortexture: {fileID: 2800000, guid: 1cd0d7a2d0c88c544908c14246fd0762, type: 3}
-  arrow: {fileID: 0}
+  arrow: {fileID: 1201214073}
 --- !u!61 &848360619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -24886,7 +24886,7 @@ GameObject:
   - component: {fileID: 935217184}
   - component: {fileID: 935217183}
   m_Layer: 5
-  m_Name: Person
+  m_Name: Arkansas Traveller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24988,7 +24988,7 @@ MonoBehaviour:
   letterdialog: {fileID: 935217185}
   portrait: {fileID: 1565830978, guid: a1b589e3794d6bd41b6f4deccd6a0c29, type: 3}
   cursortexture: {fileID: 2800000, guid: 1cd0d7a2d0c88c544908c14246fd0762, type: 3}
-  arrow: {fileID: 0}
+  arrow: {fileID: 1201214073}
 --- !u!61 &935217187
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -26544,7 +26544,7 @@ MonoBehaviour:
   letterdialog: {fileID: 1393551383}
   portrait: {fileID: 1008754292, guid: e53441cd4ff75e54c8e974a928b6a9c9, type: 3}
   cursortexture: {fileID: 2800000, guid: 1cd0d7a2d0c88c544908c14246fd0762, type: 3}
-  arrow: {fileID: 0}
+  arrow: {fileID: 1201214073}
 --- !u!50 &1393551381
 Rigidbody2D:
   serializedVersion: 4
