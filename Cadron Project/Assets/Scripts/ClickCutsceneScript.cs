@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,13 +14,14 @@ public class ClickCutsceneScript : MonoBehaviour
 
     public void OnMouseEnter(){
         if(GameManager.Instance.IsPaused() == false){
-            arrow.Remove(charname);
             arrow.Visible(false);
             Cursor.SetCursor(cursortexture, Vector2.zero, CursorMode.Auto);
         }
     }
     public void OnMouseDown(){
         if(GameManager.Instance.IsPaused() == false){
+           arrow.Remove(charname);
+           arrow.Visible(false);
            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
            letterdialog.SetDialog();
            GameManager.Instance.ToCutscene(dialogLines, charname, portrait);
@@ -42,6 +44,5 @@ public class ClickCutsceneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

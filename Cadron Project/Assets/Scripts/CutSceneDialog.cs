@@ -14,6 +14,7 @@ public class CutSceneDialog : MonoBehaviour
     public GameObject backButton;
     public GameObject nextButton;
     public TextMeshProUGUI nexttext;
+    public bool first = true;
 
     public void nextClick(){
         if(line >= lines.Length - 1)
@@ -22,25 +23,22 @@ public class CutSceneDialog : MonoBehaviour
         }
         else{
             line += 1;
-            if(line == (lines.Length - 1)){
-            // set button text to done
-            nexttext.text = "Done";
+            if (line == (lines.Length - 1)) {
+                // set button text to done
+                nexttext.text = "Done";
             }
             backButton.SetActive(true);
-           // nextButton.SetActive(false);
+            // nextButton.SetActive(false);
             GameManager.Instance.DialogShow(lines[line]); 
-            //StartCoroutine(WaitingForNext());
-            
-            
-        }
-        
+            //StartCoroutine(WaitingForNext());            
+        }        
     }
     public void backClick(){
         if(line > 0){
-            line --;
+            line--;
             GameManager.Instance.DialogShow(lines[line]);
             nexttext.text = "Next";
-            if(line == 0){
+            if (line == 0) {
                 backButton.SetActive(false);
             }
         }
@@ -71,6 +69,11 @@ public class CutSceneDialog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (nextButton.activeSelf) {
+            if (Input.GetKey(KeyCode.Return) && first) {
+                nextClick();
+                first = false;
+            }
+        }
     }
 }

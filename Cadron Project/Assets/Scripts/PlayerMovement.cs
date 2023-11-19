@@ -49,10 +49,10 @@ public class PlayerMovement : MonoBehaviour
                 }
                 
             }
-            else{
+            else {
+                
                 walking.Stop();
             }
-
         }
     }
 

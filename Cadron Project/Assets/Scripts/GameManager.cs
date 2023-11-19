@@ -112,6 +112,8 @@ public class GameManager : MonoBehaviour
 
     public void DialogHide(){
         dialogBox.SetActive(false);
+        Arrow arrow = player.GetComponent<Arrow>();
+        arrow.mouseExit = true;
     }
 
     public void ShowButtons(){

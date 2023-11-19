@@ -8,11 +8,12 @@ public class Arrow : MonoBehaviour
 {
     public List<GameObject> people;
     public GameObject current;
-    private Vector3 playerpos;
-    private Vector3 personpos;
+    public Vector3 playerpos;
+    public Vector3 personpos;
     public GameObject player;
     public GameObject arrow;
     private bool here = true;
+    public bool mouseExit = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,23 +26,17 @@ public class Arrow : MonoBehaviour
     public void Remove(string charname) {
         if (current.name == charname) {
             people.Remove(current);
-          //  gameObject.SetActive(false);
+            //  gameObject.SetActive(false);
         }
     }
 
-    public void Visible(bool b) {
-        here = b;
-    }
+    public void Visible(bool b) { here = b; }
 
     // Update is called once per frame
     void Update()
     {
-        if (people.Count > 0) {
-            current = people[0];
-        }
-        else {
-            current = null;
-        }
+        if (people.Count > 0) { current = people[0]; }
+        else { current = null; }
         playerpos = player.transform.position;
         if (current != null && here) {
             personpos = current.transform.position;
@@ -59,5 +54,17 @@ public class Arrow : MonoBehaviour
         if (!here) {
                 transform.position = playerpos + new Vector3(10000f, 10000f, 0f);
         } 
+        if (Input.GetKey(KeyCode.Return) && 
+            Mathf.Pow(playerpos.y - current.transform.position.y, 2) + 
+            Mathf.Pow(playerpos.x - current.transform.position.x, 2) < 2.0f) { 
+                ClickCutsceneScript clickCutsceneScript = current.GetComponent<ClickCutsceneScript>();
+                if (clickCutsceneScript != null) {
+                   clickCutsceneScript.OnMouseDown(); 
+                   clickCutsceneScript.OnMouseEnter(); 
+                    if (mouseExit) {
+                       clickCutsceneScript.OnMouseExit(); 
+                   }
+                }
+        }
     }
 }
