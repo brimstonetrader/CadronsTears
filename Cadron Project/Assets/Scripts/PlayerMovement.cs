@@ -54,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
                 walking.Stop();
             }
         }
+        if (GameManager.Instance.isBusy()) { horizontal = 0; vertical = 0; }
     }
 
     void FixedUpdate() {

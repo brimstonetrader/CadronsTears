@@ -14,14 +14,14 @@ public class CutSceneDialog : MonoBehaviour
     public GameObject backButton;
     public GameObject nextButton;
     public TextMeshProUGUI nexttext;
-    public bool first = true;
 
     public void nextClick(){
         if(line >= lines.Length - 1)
         {
+        GameManager.Instance.playerBusy(false);
         GameManager.Instance.EndCutscene();
         }
-        else{
+        else {
             line += 1;
             if (line == (lines.Length - 1)) {
                 // set button text to done
@@ -33,6 +33,9 @@ public class CutSceneDialog : MonoBehaviour
             //StartCoroutine(WaitingForNext());            
         }        
     }
+
+
+
     public void backClick(){
         if(line > 0){
             line--;
@@ -44,10 +47,11 @@ public class CutSceneDialog : MonoBehaviour
         }
     }
     public void StartCutscene(string name, Sprite portrait){
+        GameManager.Instance.playerBusy(true); 
         line = 0;
-       if(lines.Length > 1){
-        nexttext.text = "Next";
-       }
+        if(lines.Length > 1){
+            nexttext.text = "Next";
+        }
         backButton.SetActive(false);
         charactername.text = name;
         characterportrait.GetComponent<Image>().overrideSprite = portrait;
@@ -70,9 +74,8 @@ public class CutSceneDialog : MonoBehaviour
     void Update()
     {
         if (nextButton.activeSelf) {
-            if (Input.GetKey(KeyCode.Return) && first) {
+            if (Input.GetKeyDown(KeyCode.Space)) {
                 nextClick();
-                first = false;
             }
         }
     }

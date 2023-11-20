@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, bool> letters;
     private bool gamePaused = false;
     private bool raiseLower = false;
-
+    private bool busy = false;
     private bool newletter;
 
      void Awake(){
@@ -48,6 +48,14 @@ public class GameManager : MonoBehaviour
         letters.Add(k, false);
         newletter = true;
     }
+
+    public void playerBusy(bool b) {
+        if (b) { player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition; busy = true;  }
+        else   { player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation; busy = false; }
+    }
+
+    public bool isBusy () { return busy; }
+
     public void ClearLetters(){
         letters = new Dictionary<string, bool>();
 
@@ -112,8 +120,8 @@ public class GameManager : MonoBehaviour
 
     public void DialogHide(){
         dialogBox.SetActive(false);
-        Arrow arrow = player.GetComponent<Arrow>();
-        arrow.mouseExit = true;
+        Arrow arrow = player.transform.GetChild(0).GetComponent<Arrow>();
+        arrow.itsMouseExit();
     }
 
     public void ShowButtons(){

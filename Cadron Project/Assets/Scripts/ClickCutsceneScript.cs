@@ -30,6 +30,7 @@ public class ClickCutsceneScript : MonoBehaviour
         
     }
 
+
     public void OnMouseExit(){
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         arrow.Visible(true);

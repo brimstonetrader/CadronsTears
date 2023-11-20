@@ -29,6 +29,7 @@ public class Arrow : MonoBehaviour
             //  gameObject.SetActive(false);
         }
     }
+    public void itsMouseExit() { mouseExit = true; }
 
     public void Visible(bool b) { here = b; }
 
@@ -54,7 +55,7 @@ public class Arrow : MonoBehaviour
         if (!here) {
                 transform.position = playerpos + new Vector3(10000f, 10000f, 0f);
         } 
-        if (Input.GetKey(KeyCode.Return) && 
+        if (current != null && Input.GetKeyDown(KeyCode.Space) && 
             Mathf.Pow(playerpos.y - current.transform.position.y, 2) + 
             Mathf.Pow(playerpos.x - current.transform.position.x, 2) < 2.0f) { 
                 ClickCutsceneScript clickCutsceneScript = current.GetComponent<ClickCutsceneScript>();
