@@ -2824,6 +2824,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2707392629893111113, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
   m_PrefabInstance: {fileID: 8590827320630228844}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &388119404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388119394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97642fee9afeb1c4c81a41e2e800bfe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topleft: {x: -14.7, y: 5, z: 0}
+  bottomright: {x: 11, y: -6, z: 0}
+  tilemap: {fileID: 688846828}
+  obstacle: {fileID: 688846829}
 --- !u!1 &405537259
 GameObject:
   m_ObjectHideFlags: 0
@@ -25755,7 +25771,6 @@ MonoBehaviour:
   player: {fileID: 388119394}
   arrow: {fileID: 1201214071}
   mouseExit: 0
-  nextButton: {fileID: 212905919}
 --- !u!212 &1201214074
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -72087,6 +72102,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4231358207968648589, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 388119400}
+    - targetCorrespondingSourceObject: {fileID: 4231358207968648589, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 388119404}
   m_SourcePrefab: {fileID: 100100000, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

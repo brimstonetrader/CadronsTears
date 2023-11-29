@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
-    public float horizontal;
-    public float vertical;
+    public static float horizontal;
+    public static float vertical;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -56,6 +56,9 @@ public class PlayerMovement : MonoBehaviour
         }
         if (GameManager.Instance.isBusy()) { horizontal = 0; vertical = 0; }
     }
+
+    public static void SetHorizontal(float h) { horizontal = h; }
+    public static void SetVertical(float h) { vertical = h; }
 
     void FixedUpdate() {
         if (horizontal != 0 && vertical != 0) {
