@@ -7,11 +7,8 @@ using UnityEngine.Tilemaps;
 
 public class WalkToClick : MonoBehaviour
 {
-    public Vector3     topleft;
-    public Vector3 bottomright;
     private bool[,] grid;
     public Tilemap tilemap;
-    public Collider2D obstacle;
     private Dictionary<Vector3, Vector3> parentmap;
     private Rigidbody2D rb;
     private Stack<Vector3> path;
@@ -24,25 +21,35 @@ public class WalkToClick : MonoBehaviour
     
     void Start()
     {
-        newDestination = false;
-        path = new Stack<Vector3>();
-        //Assemble 2D grid of all integer points, with boolean false if this point 
-        //has something that collides with the player on it.
-        l = (int) Mathf.Round(    topleft.x);
-        t = (int) Mathf.Round(    topleft.y);
-        r = (int) Mathf.Round(bottomright.x);
-        b = (int) Mathf.Round(bottomright.y);
-        grid = new bool[t - b,r - l];
-        for (int x = 0; x < r - l; x++) {
-            for (int y = 0; y < t - b; y++) {
-                Vector3Int cellPosition = new Vector3Int(x + l, y + b, 0);
-                Vector3 cellCenter = tilemap.GetCellCenterWorld(cellPosition);
-//                print($"cell position: {cellPosition}, cell center: {cellCenter}");
-                // Check if the cell is occupied by a tile
-                grid[y, x] = !IsCellOccupied(cellCenter);
+        path = new Stack<Vector3>();    
+
+        // Get the TilemapCollider2D component
+        TilemapCollider2D tilemapCollider = tilemap.GetComponent<TilemapCollider2D>();  
+
+        // Calculate grid boundaries based on the TilemapCollider2D
+        Vector2 tilemapCenter = tilemapCollider.bounds.center;
+        Vector2 tilemapExtents = tilemapCollider.bounds.extents;    
+
+        l = (int)Mathf.Round(tilemapCenter.x - tilemapExtents.x);
+        t = (int)Mathf.Round(tilemapCenter.y + tilemapExtents.y);
+        r = (int)Mathf.Round(tilemapCenter.x + tilemapExtents.x);
+        b = (int)Mathf.Round(tilemapCenter.y - tilemapExtents.y);   
+
+        // Initialize the grid
+        grid = new bool[4 * (t - b) + 1, 4 * (r - l) + 1];
+        for (int x = 0; x < 4 * (r - l) + 1; x++)
+        {
+            for (int y = 0; y < 4 * (t - b) + 1; y++)
+            {
+                Vector3 cellPosition = new Vector3(((float) 1 + x + 4 * l) / 4f,((float) 1 + y + 4 * b) / 4f);
+                Vector3 cellCenter = tilemap.GetCellCenterWorld(new Vector3Int((int) Mathf.Round(cellPosition.x),(int) Mathf.Round(cellPosition.y), 0));
+            //    print($"cell positioncellPosition: {cellPosition}, cell center: {cellCenter}");
+                grid[y, x] = !IsCellOccupied(cellPosition); //& !(Physics2D.OverlapCircleAll(cellPosition, 0.5f).Length > 0)  ;
 //                if (grid[y,x]) { print("hit! " + (x + l) + ", " + (y + b)); }
+
             }
-        }
+        }   
+
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -50,14 +57,12 @@ public class WalkToClick : MonoBehaviour
     {
         // Convert world position to tilemap position
         Vector3Int cellPosition = tilemap.WorldToCell(cellCenter);
-        // int[] next = {-1, 0, 1};
-        // foreach (int a in next) {
-        //     foreach (int b in next) {
-                if (tilemap.HasTile(new Vector3Int(cellPosition.x, cellPosition.y, 0))) {
-                    return true;
-                }
-        //     }
-        // }
+        (int, int)[] playersize = {(0,0), (0,-1), (-1,0), (-1,-1)};
+        foreach ((int,int) ps in playersize) {
+            if (tilemap.HasTile(new Vector3Int(cellPosition.x + ps.Item1, cellPosition.y + ps.Item2, 0))) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -66,8 +71,8 @@ public class WalkToClick : MonoBehaviour
 
         parentmap = new Dictionary<Vector3, Vector3>();
         
-        (int, int) startc = ((int) Mathf.Round(transform.position.x), (int) Mathf.Round(transform.position.y));
-        (int, int)   endc = ((int) Mathf.Round(               end.x), (int) Mathf.Round(               end.y));
+        (int, int) startc = ((int) Mathf.Round(4*transform.position.x), (int) Mathf.Round(4*transform.position.y));
+        (int, int)   endc = ((int) Mathf.Round(4*               end.x), (int) Mathf.Round(4*               end.y));
 
         Node s       = new Node(startc, DistanceEstimate(startc, endc));
         Node e       = new Node(endc,   DistanceEstimate(startc, endc));
@@ -84,11 +89,11 @@ public class WalkToClick : MonoBehaviour
             current = open.Min;
             open.Remove(current);
             foreach ((int, int) loc in neighbors(current)) {
-                if (!(closed.Contains(loc)) && grid[loc.Item2 - b, loc.Item1 - l]) {
+                if (!(closed.Contains(loc)) && grid[loc.Item2 - (4*b), loc.Item1 - (4*l)]) {
                     // value = dist from start + dist from end
                     float g = DistanceEstimate(startc, loc);
                     float h = DistanceEstimate(endc,   loc);
-                    Node newNode = new Node(loc, g+h); 
+                    Node newNode = new Node(loc, h); 
                     open.Add(newNode);
                     parentmap[vec(newNode.position)] = vec(current.position);
                 }
@@ -99,13 +104,8 @@ public class WalkToClick : MonoBehaviour
         Stack<Vector3> path = new Stack<Vector3>();
         Vector3 x = vec(endc);
         path.Push(vec(endc));
-        foreach (KeyValuePair<Vector3, Vector3> vc  in parentmap) {
-            print("(" + vc.Key.x + ", " + vc.Key.y + ")");
-        }
         while (parentmap.ContainsKey(x)) {
             x = parentmap[x];
-            // print(x.x);
-            // print(x.y);
             path.Push(x);
         }
 
@@ -130,15 +130,14 @@ public class WalkToClick : MonoBehaviour
             mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0f;
             // rb.velocity = new Vector2(mouseWorldPos.x - transform.position.x, mouseWorldPos.y - transform.position.y);
-            Vector3Int v3int = new Vector3Int((int) Mathf.Round(mouseWorldPos.x), (int) Mathf.Round(mouseWorldPos.y), 0);
-            Vector3 v3 = tilemap.GetCellCenterWorld(v3int);
-            if (!IsCellOccupied(v3)) {
+            Vector3 v3 = new Vector3(Mathf.Round(mouseWorldPos.x), Mathf.Round(mouseWorldPos.y), 0);
+            if (Physics2D.OverlapCircleAll(mouseWorldPos, 0.25f).Length <= 0 && !GameManager.Instance.isBusy()) {
                 path = AStar(mouseWorldPos);
                 string ot = "";
                 foreach (Vector3 p in path) { 
                     ot +=  $"({p.x}, {p.y})";
                 }
-                print(ot);
+                // print(ot);
             }
         }
         if (path.Count > 0) {
@@ -150,22 +149,25 @@ public class WalkToClick : MonoBehaviour
                 newDestination = true;
             } 
             // if (newDestination) {
-                if      (targetDirection.x >  0.01) { PlayerMovement.SetHorizontal(1); } 
-                else if (targetDirection.x < -0.01) { PlayerMovement.SetHorizontal(-1); } 
-                else if (targetDirection.y >  0.01) { PlayerMovement.SetVertical(1); } 
-                else if (targetDirection.y < -0.01) { PlayerMovement.SetVertical(1); } 
-                else                                { PlayerMovement.SetHorizontal(1); } 
-                newDestination = false;
+                // if      (targetDirection.x >  0.01) { PlayerMovement.SetHorizontal(1); } 
+                // else if (targetDirection.x < -0.01) { PlayerMovement.SetHorizontal(-1); } 
+                // else if (targetDirection.y >  0.01) { PlayerMovement.SetVertical(1); } 
+                // else if (targetDirection.y < -0.01) { PlayerMovement.SetVertical(-1); } 
+                // else    { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(0); } 
+                // newDestination = false;
             // }
         }
     }   
     void OnCollisionEnter2D(Collision2D collision) {
-        path = new Stack<Vector3>();
-        newDestination = true;
+        if (collision.gameObject.tag == "NPC") {
+            path = new Stack<Vector3>();
+            newDestination = true;
+            rb.velocity = new Vector2(0f, 0f);
+        }
     }
 
     Vector3 vec((int, int) coord) {
-        Vector3 v = new Vector3((float) coord.Item1,(float) coord.Item2, 0f);
+        Vector3 v = new Vector3(((float) coord.Item1)/4f,((float) coord.Item2)/4f, 0f);
         return v;
     }
 }

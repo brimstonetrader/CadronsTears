@@ -2836,10 +2836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97642fee9afeb1c4c81a41e2e800bfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topleft: {x: -14.7, y: 5, z: 0}
-  bottomright: {x: 11, y: -6, z: 0}
   tilemap: {fileID: 688846828}
-  obstacle: {fileID: 688846829}
 --- !u!1 &405537259
 GameObject:
   m_ObjectHideFlags: 0
@@ -24629,7 +24626,7 @@ GameObject:
   - component: {fileID: 848360622}
   m_Layer: 5
   m_Name: Alexander McFarland
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24860,7 +24857,7 @@ GameObject:
   - component: {fileID: 935217183}
   m_Layer: 5
   m_Name: Arkansas Traveller
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26478,7 +26475,7 @@ GameObject:
   - component: {fileID: 1393551382}
   m_Layer: 5
   m_Name: Lydia McFarland
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72038,7 +72035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2707392629893111113, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2707392629893111113, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
       propertyPath: m_LocalPosition.y
