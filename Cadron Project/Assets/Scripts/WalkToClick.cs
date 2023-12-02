@@ -42,9 +42,8 @@ public class WalkToClick : MonoBehaviour
             for (int y = 0; y < 4 * (t - b) + 1; y++)
             {
                 Vector3 cellPosition = new Vector3(((float) 1 + x + 4 * l) / 4f,((float) 1 + y + 4 * b) / 4f);
-                Vector3 cellCenter = tilemap.GetCellCenterWorld(new Vector3Int((int) Mathf.Round(cellPosition.x),(int) Mathf.Round(cellPosition.y), 0));
             //    print($"cell positioncellPosition: {cellPosition}, cell center: {cellCenter}");
-                grid[y, x] = !IsCellOccupied(cellPosition); //& !(Physics2D.OverlapCircleAll(cellPosition, 0.5f).Length > 0)  ;
+                grid[y, x] = !IsCellOccupied(cellPosition);
 //                if (grid[y,x]) { print("hit! " + (x + l) + ", " + (y + b)); }
 
             }
