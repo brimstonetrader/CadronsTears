@@ -18,10 +18,12 @@ public class WalkToClick : MonoBehaviour
     private int r;
     private Vector3 mouseWorldPos;
     private bool newDestination;
+    private bool done;
     
     void Start()
     {
         path = new Stack<Vector3>();    
+        done = true;
 
         // Get the TilemapCollider2D component
         TilemapCollider2D tilemapCollider = tilemap.GetComponent<TilemapCollider2D>();  
@@ -37,15 +39,12 @@ public class WalkToClick : MonoBehaviour
 
         // Initialize the grid
         grid = new bool[4 * (t - b) + 1, 4 * (r - l) + 1];
-        for (int x = 0; x < 4 * (r - l) + 1; x++)
-        {
-            for (int y = 0; y < 4 * (t - b) + 1; y++)
-            {
+        for (int x = 0; x < 4 * (r - l) + 1; x++) {
+            for (int y = 0; y < 4 * (t - b) + 1; y++) {
                 Vector3 cellPosition = new Vector3(((float) 1 + x + 4 * l) / 4f,((float) 1 + y + 4 * b) / 4f);
-            //    print($"cell positioncellPosition: {cellPosition}, cell center: {cellCenter}");
                 grid[y, x] = !IsCellOccupied(cellPosition);
-//                if (grid[y,x]) { print("hit! " + (x + l) + ", " + (y + b)); }
-
+            //    print($"cell positioncellPosition: {cellPosition}, cell center: {cellCenter}");
+            //    if (grid[y,x]) { print("hit! " + (x + l) + ", " + (y + b)); }
             }
         }   
 
@@ -54,15 +53,19 @@ public class WalkToClick : MonoBehaviour
 
     private bool IsCellOccupied(Vector3 cellCenter)
     {
-        // Convert world position to tilemap position
         Vector3Int cellPosition = tilemap.WorldToCell(cellCenter);
-        (int, int)[] playersize = {(0,0), (0,-1), (-1,0), (-1,-1)};
+        (int, int)[] playersize = {(0,0), (0,-1), (1,0), (1,-1),(0,-2),(-1,-2) };
         foreach ((int,int) ps in playersize) {
             if (tilemap.HasTile(new Vector3Int(cellPosition.x + ps.Item1, cellPosition.y + ps.Item2, 0))) {
                 return true;
             }
-        }
-        return false;
+            Collider2D[] near = Physics2D.OverlapCircleAll(cellCenter, 0.125f);
+            foreach (Collider2D n in near) {
+                if (n.CompareTag("NPC")) { 
+                    return true;  
+                }
+            }
+        } return false;
     }
 
 
@@ -83,14 +86,15 @@ public class WalkToClick : MonoBehaviour
 
         //closed contains all previously explored positions
         HashSet<(int, int)> closed = new   HashSet<(int, int)>();
-
-        while (open.Count > 0 && !(closed.Contains(endc))) {
+        int path_length = 0;
+        while (open.Count > 0) {
             current = open.Min;
             open.Remove(current);
+            path_length++;
             foreach ((int, int) loc in neighbors(current)) {
                 if (!(closed.Contains(loc)) && grid[loc.Item2 - (4*b), loc.Item1 - (4*l)]) {
                     // value = dist from start + dist from end
-                    float g = DistanceEstimate(startc, loc);
+                    float g = path_length;
                     float h = DistanceEstimate(endc,   loc);
                     Node newNode = new Node(loc, h); 
                     open.Add(newNode);
@@ -99,7 +103,6 @@ public class WalkToClick : MonoBehaviour
             }
             closed.Add(current.position);
         }
-
         Stack<Vector3> path = new Stack<Vector3>();
         Vector3 x = vec(endc);
         path.Push(vec(endc));
@@ -107,7 +110,6 @@ public class WalkToClick : MonoBehaviour
             x = parentmap[x];
             path.Push(x);
         }
-
         return path;
     }
 
@@ -119,7 +121,9 @@ public class WalkToClick : MonoBehaviour
     }
 
     public float DistanceEstimate((int, int) v1, (int, int) v2) {
-        return Mathf.Abs(v1.Item1 - v2.Item1) + Mathf.Abs(v2.Item2 - v1.Item2);
+        float dx = Mathf.Abs(v1.Item1 - v2.Item1);
+        float dy = Mathf.Abs(v1.Item2 - v2.Item2);
+        return Mathf.Sqrt(dx * dx + dy * dy);
     }
 
     // Update is called once per frame
@@ -130,13 +134,17 @@ public class WalkToClick : MonoBehaviour
             mouseWorldPos.z = 0f;
             // rb.velocity = new Vector2(mouseWorldPos.x - transform.position.x, mouseWorldPos.y - transform.position.y);
             Vector3 v3 = new Vector3(Mathf.Round(mouseWorldPos.x), Mathf.Round(mouseWorldPos.y), 0);
-            if (Physics2D.OverlapCircleAll(mouseWorldPos, 0.25f).Length <= 0 && !GameManager.Instance.isBusy()) {
+            Collider2D[] cols = Physics2D.OverlapCircleAll(mouseWorldPos, 0.125f);
+            bool b = true;
+            foreach (Collider2D col in cols) { if (col.CompareTag("NPC")) { b = false; } }
+            if (b && !GameManager.Instance.isBusy()) {
                 path = AStar(mouseWorldPos);
+                done = false;
                 string ot = "";
                 foreach (Vector3 p in path) { 
                     ot +=  $"({p.x}, {p.y})";
                 }
-                // print(ot);
+                print(ot);
             }
         }
         if (path.Count > 0) {
@@ -147,15 +155,16 @@ public class WalkToClick : MonoBehaviour
                 path.Pop();                
                 newDestination = true;
             } 
-            // if (newDestination) {
-                // if      (targetDirection.x >  0.01) { PlayerMovement.SetHorizontal(1); } 
-                // else if (targetDirection.x < -0.01) { PlayerMovement.SetHorizontal(-1); } 
-                // else if (targetDirection.y >  0.01) { PlayerMovement.SetVertical(1); } 
-                // else if (targetDirection.y < -0.01) { PlayerMovement.SetVertical(-1); } 
-                // else    { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(0); } 
-                // newDestination = false;
-            // }
+            if (newDestination) {
+                if      (targetDirection.x >  0.01) { PlayerMovement.SetHorizontal(1);  PlayerMovement.SetVertical(0); } 
+                else if (targetDirection.x < -0.01) { PlayerMovement.SetHorizontal(-1); PlayerMovement.SetVertical(0); } 
+                else if (targetDirection.y >  0.01) { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(1); } 
+                else if (targetDirection.y < -0.01) { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(-1); } 
+                else    { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(0); } 
+                newDestination = false;
+            }
         }
+        else { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(0); }
     }   
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "NPC") {

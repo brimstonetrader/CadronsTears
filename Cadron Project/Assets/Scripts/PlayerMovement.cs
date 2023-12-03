@@ -7,6 +7,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D body;
     public static float horizontal;
     public static float vertical;
+    public static float h_path;
+    public static float v_path;
+    
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -31,9 +34,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if(GameManager.Instance.IsPaused() == false)
         {
-           horizontal = Input.GetAxisRaw("Horizontal");
-            animator.SetFloat("horizontal", horizontal);
+            horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+            if (h_path != 0) { horizontal = h_path; }
+            if (v_path != 0) { vertical   = v_path; }
+            animator.SetFloat("horizontal", horizontal);
             animator.SetFloat("vertical", vertical);
             if (horizontal < 0)
             {
@@ -54,11 +59,13 @@ public class PlayerMovement : MonoBehaviour
                 walking.Stop();
             }
         }
+        horizontal -= h_path;
+        vertical -= v_path;
         if (GameManager.Instance.isBusy()) { horizontal = 0; vertical = 0; }
     }
 
-    public static void SetHorizontal(float h) { horizontal = h; }
-    public static void SetVertical(float h) { vertical = h; }
+    public static void SetHorizontal(float h) { h_path = h; }
+    public static void SetVertical(float v) { v_path = v; }
 
     void FixedUpdate() {
         if (horizontal != 0 && vertical != 0) {
