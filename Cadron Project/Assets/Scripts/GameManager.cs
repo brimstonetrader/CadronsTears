@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class GameManager : MonoBehaviour
     private bool gamePaused = false;
     private bool raiseLower = false;
     private bool busy = false;
+    private int tentscene;
+
+    private String nextscene;
     private bool newletter;
 
      void Awake(){
@@ -161,7 +165,7 @@ public class GameManager : MonoBehaviour
     }
     public void EndCutscene(){
         // if the scenes name is cutscene, then transition to the Season2 scene here
-        if (SceneManager.GetActiveScene().name == "Cutscene") { ChangeScene("Season 2"); }
+        if (SceneManager.GetActiveScene().name == "Cutscene") { ChangeScene(nextscene); }
         else{ShowButtons();}
         DialogHide();
         gamePaused = false;
@@ -180,6 +184,16 @@ public class GameManager : MonoBehaviour
     }
     public Dictionary<string, bool> GetLetters(){
         return letters;
+    }
+
+    public int GetTentscene(){
+        return tentscene;
+    }
+    public void StartTentscene(int c, String next){
+        tentscene = c;
+        ChangeScene("Cutscene");
+        nextscene = next;
+
     }
     void Start()
     {
