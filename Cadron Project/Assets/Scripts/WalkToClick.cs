@@ -38,7 +38,7 @@ public class WalkToClick : MonoBehaviour
         b = (int)Mathf.Round(tilemapCenter.y - tilemapExtents.y);   
 
         // Initialize the grid
-        grid = new bool[4 * (t - b) + 1, 4 * (r - l) + 1];
+        grid = new bool[4 * (t - b + 1), 4 * (r - l + 1)];
         for (int x = 0; x < 4 * (r - l) + 1; x++) {
             for (int y = 0; y < 4 * (t - b) + 1; y++) {
                 Vector3 cellPosition = new Vector3(((float) 1 + x + 4 * l) / 4f,((float) 1 + y + 4 * b) / 4f);
@@ -92,13 +92,15 @@ public class WalkToClick : MonoBehaviour
             open.Remove(current);
             path_length++;
             foreach ((int, int) loc in neighbors(current)) {
-                if (!(closed.Contains(loc)) && grid[loc.Item2 - (4*b), loc.Item1 - (4*l)]) {
-                    // value = dist from start + dist from end
-                    float g = path_length;
-                    float h = DistanceEstimate(endc,   loc);
-                    Node newNode = new Node(loc, h); 
-                    open.Add(newNode);
-                    parentmap[vec(newNode.position)] = vec(current.position);
+                if (loc.Item2 - (4*b) < 4 * (t - b + 1) && loc.Item1 - (4*l) < 4 * (r - l + 1)) {
+                    if (!(closed.Contains(loc)) && grid[loc.Item2 - (4*b), loc.Item1 - (4*l)]) {
+                        // value = dist from start + dist from end
+                        float g = path_length;
+                        float h = DistanceEstimate(endc,   loc);
+                        Node newNode = new Node(loc, h); 
+                        open.Add(newNode);
+                        parentmap[vec(newNode.position)] = vec(current.position);
+                    }
                 }
             }
             closed.Add(current.position);
@@ -113,13 +115,38 @@ public class WalkToClick : MonoBehaviour
         return path;
     }
 
-    public (int, int)[] neighbors(Node n) {
-        int x = n.position.Item1;
-        int y = n.position.Item2;
-        (int, int)[] ns = { (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1) };
-        return ns;
+public (int, int)[] neighbors(Node n)
+{
+    int x = n.position.Item1;
+    int y = n.position.Item2;
+
+    // Define neighbors without removing invalid ones
+    (int, int)[] ns = { (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1) };
+
+    // Use a list to store valid neighbors
+    List<(int, int)> validNeighbors = new List<(int, int)>();
+
+    // Check and filter out invalid neighbors
+    foreach (var neighbor in ns)
+    {
+        if (IsValidNeighbor(neighbor))
+        {
+            validNeighbors.Add(neighbor);
+        }
     }
 
+    // Convert the list back to an array and return
+    return validNeighbors.ToArray();
+}
+
+private bool IsValidNeighbor((int, int) neighbor)
+{
+    int nx = neighbor.Item1;
+    int ny = neighbor.Item2;
+
+    // Check if the neighbor is within bounds
+    return (nx >= 4 * l && nx < 4 * (r + 1) && ny >= 4 * b && ny < 4 * (t + 1));
+}
     public float DistanceEstimate((int, int) v1, (int, int) v2) {
         float dx = Mathf.Abs(v1.Item1 - v2.Item1);
         float dy = Mathf.Abs(v1.Item2 - v2.Item2);
