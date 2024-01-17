@@ -24,11 +24,7 @@ public class WalkToClick : MonoBehaviour
     {
         path = new Stack<Vector3>();    
         done = true;
-
-        // Get the TilemapCollider2D component
         TilemapCollider2D tilemapCollider = tilemap.GetComponent<TilemapCollider2D>();  
-
-        // Calculate grid boundaries based on the TilemapCollider2D
         Vector2 tilemapCenter = tilemapCollider.bounds.center;
         Vector2 tilemapExtents = tilemapCollider.bounds.extents;    
 
@@ -37,10 +33,9 @@ public class WalkToClick : MonoBehaviour
         r = (int)Mathf.Round(tilemapCenter.x + tilemapExtents.x);
         b = (int)Mathf.Round(tilemapCenter.y - tilemapExtents.y);   
 
-        // Initialize the grid
         grid = new bool[4 * (t - b + 1), 4 * (r - l + 1)];
-        for (int x = 0; x < 4 * (r - l) + 1; x++) {
-            for (int y = 0; y < 4 * (t - b) + 1; y++) {
+        for (int x = 0; x < 4 * (r - l + 1); x++) {
+            for (int y = 0; y < 4 * (t - b + 1); y++) {
                 Vector3 cellPosition = new Vector3(((float) 1 + x + 4 * l) / 4f,((float) 1 + y + 4 * b) / 4f);
                 grid[y, x] = !IsCellOccupied(cellPosition);
             //    print($"cell positioncellPosition: {cellPosition}, cell center: {cellCenter}");
@@ -119,32 +114,18 @@ public (int, int)[] neighbors(Node n)
 {
     int x = n.position.Item1;
     int y = n.position.Item2;
-
-    // Define neighbors without removing invalid ones
     (int, int)[] ns = { (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1) };
-
-    // Use a list to store valid neighbors
     List<(int, int)> validNeighbors = new List<(int, int)>();
-
-    // Check and filter out invalid neighbors
-    foreach (var neighbor in ns)
-    {
-        if (IsValidNeighbor(neighbor))
-        {
-            validNeighbors.Add(neighbor);
-        }
-    }
-
-    // Convert the list back to an array and return
+    foreach (var neighbor in ns) {
+        if (IsValidNeighbor(neighbor)) {
+            validNeighbors.Add(neighbor); } }
     return validNeighbors.ToArray();
 }
 
-private bool IsValidNeighbor((int, int) neighbor)
+private bool IsValidNeighbor((int, int) n)
 {
-    int nx = neighbor.Item1;
-    int ny = neighbor.Item2;
-
-    // Check if the neighbor is within bounds
+    int nx = n.Item1;
+    int ny = n.Item2;
     return (nx >= 4 * l && nx < 4 * (r + 1) && ny >= 4 * b && ny < 4 * (t + 1));
 }
     public float DistanceEstimate((int, int) v1, (int, int) v2) {
