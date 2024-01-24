@@ -4079,7 +4079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 388119394}
-  boundaryPercent: 0.25
+  boundaryPercent: 0.4
   easing: 0.001
 --- !u!82 &519420034
 AudioSource:
@@ -24927,7 +24927,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 374100553}
   m_Father: {fileID: 1797836980}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -26730,7 +26731,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 1986038396}
   m_Father: {fileID: 1797836980}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -72582,7 +72584,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2707392629893111113, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 1201214072}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4231358207968648589, guid: 5bfc1527f2237b24f88088b30ee6acee, type: 3}
@@ -72619,3 +72621,5 @@ SceneRoots:
   - {fileID: 681199630}
   - {fileID: 1501248186}
   - {fileID: 1797836980}
+  - {fileID: 1843030165}
+  - {fileID: 2039648218}

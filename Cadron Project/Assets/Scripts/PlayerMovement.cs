@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        walking = GetComponent<AudioSource>();
+        // walking = GetComponent<AudioSource>();
     }
     
     // Update is called once per frame
@@ -48,16 +48,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 spriteRenderer.flipX = false;
             }
-            if(horizontal != 0 || vertical != 0){
-                if(!walking.isPlaying){
-                    walking.Play();
-                }
+            // if(horizontal != 0 || vertical != 0){
+            //     if(!walking.isPlaying){
+            //         walking.Play();
+            //     } 
+            // }
+            // else {
                 
-            }
-            else {
-                
-                walking.Stop();
-            }
+            //     walking.Stop();
+            // }
         }
         horizontal -= h_path;
         vertical -= v_path;
