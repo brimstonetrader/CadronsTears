@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
     public bool isBusy () { return busy; }
     public void setBusy (bool b) { busy = b; }
 
+
     public void ClearLetters(){
         letters = new Dictionary<string, bool>();
 

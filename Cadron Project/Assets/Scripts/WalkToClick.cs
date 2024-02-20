@@ -28,10 +28,10 @@ public class WalkToClick : MonoBehaviour
         Vector2 tilemapCenter = tilemapCollider.bounds.center;
         Vector2 tilemapExtents = tilemapCollider.bounds.extents;    
 
-        l = (int)Mathf.Round(tilemapCenter.x - tilemapExtents.x);
-        t = (int)Mathf.Round(tilemapCenter.y + tilemapExtents.y);
-        r = (int)Mathf.Round(tilemapCenter.x + tilemapExtents.x);
-        b = (int)Mathf.Round(tilemapCenter.y - tilemapExtents.y);   
+        l = (int)Mathf.Round(tilemapCenter.x - tilemapExtents.x - 6);
+        t = (int)Mathf.Round(tilemapCenter.y + tilemapExtents.y + 6);
+        r = (int)Mathf.Round(tilemapCenter.x + tilemapExtents.x + 6);
+        b = (int)Mathf.Round(tilemapCenter.y - tilemapExtents.y - 6);   
 
         grid = new bool[4 * (t - b + 1), 4 * (r - l + 1)];
         for (int x = 0; x < 4 * (r - l + 1); x++) {
@@ -102,10 +102,9 @@ public class WalkToClick : MonoBehaviour
         }
         Stack<Vector3> path = new Stack<Vector3>();
         Vector3 x = vec(endc);
-        path.Push(vec(endc));
         while (parentmap.ContainsKey(x)) {
-            x = parentmap[x];
             path.Push(x);
+            x = parentmap[x];            
         }
         return path;
     }
@@ -137,6 +136,7 @@ private bool IsValidNeighbor((int, int) n)
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.isBusy()) { path = new Stack<Vector3>(); }
         if (Input.GetMouseButtonDown(0)) {
             mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0f;
@@ -172,14 +172,18 @@ private bool IsValidNeighbor((int, int) n)
                 newDestination = false;
             }
         }
-        else { PlayerMovement.SetHorizontal(0); PlayerMovement.SetVertical(0); }
+        else { 
+            transform.position = Vector3.MoveTowards(transform.position, transform.position, 1);
+            PlayerMovement.SetHorizontal(0); 
+            PlayerMovement.SetVertical(0); 
+        }
     }   
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.tag == "NPC") {
+        // if (collision.gameObject.tag == "NPC") {
             path = new Stack<Vector3>();
             newDestination = true;
             rb.velocity = new Vector2(0f, 0f);
-        }
+        // }
     }
 
     Vector3 vec((int, int) coord) {
