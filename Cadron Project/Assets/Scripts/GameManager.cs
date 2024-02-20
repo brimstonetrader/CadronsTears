@@ -20,16 +20,17 @@ public class GameManager : MonoBehaviour
     private bool raiseLower = false;
     private bool busy;
     private int tentscene;
+    private Animator animator;
 
     private String nextscene;
     private bool newletter;
 
-     void Awake(){
+    void Awake(){
         if (Instance == null){
             Instance = this;
         } else {
         Destroy(gameObject);
-    }
+        }
     }
 
     public bool IsLetterDelivered(string key){
@@ -53,12 +54,24 @@ public class GameManager : MonoBehaviour
     }
 
     public void playerBusy(bool b) {
-        if (b) { player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition; busy = true;  }
-        else   { player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation; busy = false; }
+        if (player != null) {
+            if (b) { 
+                animator.SetFloat("horizontal", 0);
+                animator.SetFloat("vertical",   0);
+                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition; 
+                busy = true;  
+            }
+            else   { 
+                Animator animator = player.GetComponent<Animator>(); 
+                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation; 
+                busy = false; 
+            }
+        }
     }
 
     public bool isBusy () { return busy; }
     public void setBusy (bool b) { busy = b; }
+
 
     public void ClearLetters(){
         letters = new Dictionary<string, bool>();
@@ -199,6 +212,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        animator = player.GetComponent<Animator>(); 
         busy = false;
         letters = new Dictionary<string, bool>();
     }

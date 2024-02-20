@@ -32,8 +32,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.IsPaused() == false)
-        {
+        if(GameManager.Instance.IsPaused() == false && !GameManager.Instance.isBusy()) {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
             if (h_path != 0) { horizontal = h_path; }
@@ -67,12 +66,11 @@ public class PlayerMovement : MonoBehaviour
     public static void SetVertical(float v) { v_path = v; }
 
     void FixedUpdate() {
-        if (horizontal != 0 && vertical != 0) {
-            animator.SetFloat("horizontal", horizontal);
-            animator.SetFloat("vertical", vertical);
+        if (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f) {
+            animator.SetFloat("horizontal", Mathf.Round(5*horizontal)/5);
+            animator.SetFloat("vertical", Mathf.Round(5*vertical)/5);
             horizontal *= moveLimiter;
             vertical *= moveLimiter;
-            
         }
         
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
