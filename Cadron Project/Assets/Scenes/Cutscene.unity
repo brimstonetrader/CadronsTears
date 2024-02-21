@@ -1589,7 +1589,7 @@ MonoBehaviour:
   - It has very nice information.
   - Extremely informative!
   - History!
-  whichTentScene: 2
+  whichTentScene: 1
   portrait: {fileID: 0}
   picture: {fileID: 1515300824}
 --- !u!224 &1022692942
@@ -3057,11 +3057,10 @@ MonoBehaviour:
   - Alexander McFarland would never experience the rapid growth that occured in the
     Cadron Settlement.
   - Shortly after his death a post office was established that ran from the Arkansas
-    Post, through the Cadron Settlement.  Shortly after his death a post office was
-    established that ran from the Arkansas Post, through the Cadron Settlement.
+    Post, through the Cadron Settlement.
   - With the benefits of a postal route, the town grew beyond its horizons, and soon
     enough some residents would be in precarious situations.
-  whichTentScene: 1
+  whichTentScene: 2
   portrait: {fileID: 0}
   picture: {fileID: 1515300824}
 --- !u!1 &1515300824
