@@ -3245,6 +3245,7 @@ MonoBehaviour:
   characterportrait: {fileID: 1435460177}
   backButton: {fileID: 131746471}
   nextButton: {fileID: 212905919}
+  doneButton: {fileID: 0}
   nexttext: {fileID: 1169521410}
 --- !u!1 &476910994
 GameObject:
@@ -25905,6 +25906,7 @@ MonoBehaviour:
   - {fileID: 935217182}
   - {fileID: 848360616}
   - {fileID: 1393551375}
+  - {fileID: 85707762}
   current: {fileID: 935217182}
   playerpos: {x: 0, y: 0, z: 0}
   personpos: {x: 0, y: 0, z: 0}

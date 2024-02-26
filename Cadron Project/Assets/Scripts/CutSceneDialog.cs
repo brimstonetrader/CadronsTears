@@ -13,7 +13,6 @@ public class CutSceneDialog : MonoBehaviour
     public GameObject characterportrait;
     public GameObject backButton;
     public GameObject nextButton;
-    public GameObject doneButton;
     public TextMeshProUGUI nexttext;
 
     public void nextClick(){
@@ -27,8 +26,6 @@ public class CutSceneDialog : MonoBehaviour
             if (line == (lines.Length - 1)) {
                 // set button text to done
                 nexttext.text = "Done";
-                doneButton.SetActive(true);
-
             }
             backButton.SetActive(true);
             // nextButton.SetActive(false);
