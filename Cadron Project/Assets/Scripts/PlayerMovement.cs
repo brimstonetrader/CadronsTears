@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public static float h_path;
     public static float v_path;
     
-
+    public bool idle;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
@@ -23,16 +23,19 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        idle = false;
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         // walking = GetComponent<AudioSource>();
     }
     
+
+
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.IsPaused() == false && !GameManager.Instance.isBusy()) {
+        if(!idle && GameManager.Instance.IsPaused() == false && !GameManager.Instance.isBusy()) {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
             if (h_path != 0) { horizontal = h_path; }
@@ -56,17 +59,18 @@ public class PlayerMovement : MonoBehaviour
                 
             //     walking.Stop();
             // }
-        }
         horizontal -= h_path;
         vertical -= v_path;
-        if (GameManager.Instance.isBusy()) { horizontal = 0; vertical = 0; }
+        }
+        else { horizontal = 0; vertical = 0; }
     }
+    public void SetIdle(bool b) { idle = b; }
 
     public static void SetHorizontal(float h) { h_path = h; }
     public static void SetVertical(float v) { v_path = v; }
 
     void FixedUpdate() {
-        if (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f) {
+        if (!idle && (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f)) {
             animator.SetFloat("horizontal", Mathf.Round(5*horizontal)/5);
             animator.SetFloat("vertical", Mathf.Round(5*vertical)/5);
             horizontal *= moveLimiter;

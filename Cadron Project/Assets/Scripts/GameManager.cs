@@ -55,16 +55,16 @@ public class GameManager : MonoBehaviour
 
     public void playerBusy(bool b) {
         if (player != null) {
+            player.GetComponent<PlayerMovement>().SetIdle(b);
+            busy = true;  
             if (b) { 
                 animator.SetFloat("horizontal", 0);
                 animator.SetFloat("vertical",   0);
-                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition; 
-                busy = true;  
+                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll; 
             }
             else   { 
                 Animator animator = player.GetComponent<Animator>(); 
                 player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation; 
-                busy = false; 
             }
         }
     }
@@ -163,9 +163,7 @@ public class GameManager : MonoBehaviour
          if(!(SceneManager.GetActiveScene().name == "Cutscene")){
          HideButtons();     
          }
-         
     //         Time.timeScale = 0f;
-
     }
 
     public void PauseGame(){
@@ -180,7 +178,9 @@ public class GameManager : MonoBehaviour
     }
     public void EndCutscene(){
         // if the scenes name is cutscene, then transition to the Season2 scene here
-        if (SceneManager.GetActiveScene().name == "Cutscene") { ChangeScene(nextscene); }
+        if (SceneManager.GetActiveScene().name == "Cutscene") { 
+            if (nextscene == null) {ChangeScene("Season 2");} 
+            else {ChangeScene(nextscene);}}
         else{ShowButtons();}
         DialogHide();
         gamePaused = false;

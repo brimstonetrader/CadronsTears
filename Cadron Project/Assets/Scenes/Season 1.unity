@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31c6a7d3da16e8498b1cb4a9ac7e647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextscene: Road
+  nextscene: Season 2
   whichscene: 0
   requiredletter: Lydia McFarland
 --- !u!61 &85707768
@@ -3245,7 +3245,6 @@ MonoBehaviour:
   characterportrait: {fileID: 1435460177}
   backButton: {fileID: 131746471}
   nextButton: {fileID: 212905919}
-  doneButton: {fileID: 0}
   nexttext: {fileID: 1169521410}
 --- !u!1 &476910994
 GameObject:

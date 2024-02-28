@@ -1986,7 +1986,7 @@ MonoBehaviour:
   dialogText: {fileID: 635208663}
   curtain: {fileID: 58787202}
   canvas: {fileID: 1261289897}
-  player: {fileID: 707959630}
+  player: {fileID: 0}
 --- !u!4 &1226805781
 Transform:
   m_ObjectHideFlags: 0
@@ -3688,7 +3688,6 @@ MonoBehaviour:
   characterportrait: {fileID: 1674896732}
   backButton: {fileID: 620138042}
   nextButton: {fileID: 1081131599}
-  doneButton: {fileID: 1734152950}
   nexttext: {fileID: 24322949}
 --- !u!114 &1764391368
 MonoBehaviour:
