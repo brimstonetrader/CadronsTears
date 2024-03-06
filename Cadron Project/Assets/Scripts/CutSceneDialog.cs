@@ -15,6 +15,7 @@ public class CutSceneDialog : MonoBehaviour
     public GameObject backButton;
     public GameObject nextButton;
     public TextMeshProUGUI nexttext;
+    
 
     public bool speaking = false;
     public void nextClick(){
@@ -52,6 +53,7 @@ public class CutSceneDialog : MonoBehaviour
             }
         }
     }
+    
     public void StartCutscene(string name, Sprite portrait){
         line = 0;
        if(lines.Length > 1){

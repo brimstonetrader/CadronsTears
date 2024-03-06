@@ -9,6 +9,7 @@ public class ClickCutsceneScript : MonoBehaviour
     public LetterDialog letterdialog;
     public Sprite portrait;
     public Texture2D cursortexture;
+    private bool canStartDialog = false;
 
     public void OnMouseEnter(){
         if(GameManager.Instance.IsPaused() == false){
@@ -28,7 +29,31 @@ public class ClickCutsceneScript : MonoBehaviour
     public void OnMouseExit(){
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
-
+    public void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.rigidbody.gameObject.CompareTag("Player")) {
+            canStartDialog = true;
+            StartCoroutine(WaitToStart());
+            Debug.Log("ent");
+        }
+    }
+    IEnumerator WaitToStart(){
+        while(canStartDialog){
+            if(Input.GetKeyDown(KeyCode.E)){
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                letterdialog.SetDialog();
+                GameManager.Instance.ToCutscene(dialogLines, charname, portrait);
+                letterdialog.UpdateLetter();
+                canStartDialog = false;
+            }
+            yield return null;
+        }
+    }
+    public void OnCollisionExit2D(Collision2D collision) {
+        if (collision.rigidbody.gameObject.CompareTag("Player"))
+        {
+            canStartDialog = false;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
