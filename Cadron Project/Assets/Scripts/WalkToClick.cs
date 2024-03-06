@@ -136,7 +136,7 @@ private bool IsValidNeighbor((int, int) n)
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.isBusy()) { path = new Stack<Vector3>(); }
+        if (GameManager.Instance.isBusy() || Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) { path = new Stack<Vector3>(); }
         if (Input.GetMouseButtonDown(0)) {
             mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0f;
@@ -157,7 +157,7 @@ private bool IsValidNeighbor((int, int) n)
         }
         if (path.Count > 0) {
             Vector3 targetDirection = (path.Peek() - transform.position).normalized;
-            transform.position = Vector3.MoveTowards(transform.position, path.Peek(), 2 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, path.Peek(), 1.5f * Time.deltaTime);
             rb.velocity = new Vector2(targetDirection.x, targetDirection.y);
             if (Vector3.Distance(transform.position, path.Peek()) < 0.05) {
                 path.Pop();                

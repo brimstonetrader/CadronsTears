@@ -55,16 +55,17 @@ public class Arrow : MonoBehaviour
         if (!here) {
                 transform.position = playerpos + new Vector3(10000f, 10000f, 0f);
         } 
-        if (current != null && Input.GetKeyDown(KeyCode.Space) && 
+        if (!GameManager.Instance.isBusy()) { here = true; }
+        if (current != null && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && 
             Mathf.Pow(playerpos.y - current.transform.position.y, 2) + 
             Mathf.Pow(playerpos.x - current.transform.position.x, 2) < 2.0f) { 
                 ClickCutsceneScript clickCutsceneScript = current.GetComponent<ClickCutsceneScript>();
                 if (clickCutsceneScript != null) {
-                   clickCutsceneScript.OnMouseDown(); 
-                   clickCutsceneScript.OnMouseEnter(); 
+                    clickCutsceneScript.OnMouseDown(); 
+                    clickCutsceneScript.OnMouseEnter(); 
                     if (mouseExit) {
                        clickCutsceneScript.OnMouseExit(); 
-                   }
+                    }
                 }
         }
     }
