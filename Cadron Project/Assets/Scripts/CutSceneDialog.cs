@@ -18,24 +18,6 @@ public class CutSceneDialog : MonoBehaviour
 
     public bool speaking = false;
     public void nextClick(){
-<<<<<<< HEAD
-        if(line >= lines.Length - 1)
-        {
-        GameManager.Instance.playerBusy(false);
-        GameManager.Instance.EndCutscene();
-        }
-        else {
-            line += 1;
-            if (line == (lines.Length - 1)) {
-                // set button text to done
-                nexttext.text = "Done";
-            }
-            backButton.SetActive(true);
-            // nextButton.SetActive(false);
-            GameManager.Instance.DialogShow(lines[line]); 
-            //StartCoroutine(WaitingForNext());            
-        }        
-=======
         if(GameManager.Instance.CheckTextDone(lines[line])){
             if(line >= lines.Length - 1)
             {
@@ -59,7 +41,6 @@ public class CutSceneDialog : MonoBehaviour
         else{
             GameManager.Instance.FinishText(lines[line]);
         }    
->>>>>>> upstream/main
     }
 
     public void done(string nextscene) {

@@ -164,8 +164,6 @@ public class GameManager : MonoBehaviour
          HideButtons();     
          }
     //         Time.timeScale = 0f;
-<<<<<<< HEAD
-=======
     }
     public bool CheckTextDone(String l){
         return dialogText.text.Equals(l);
@@ -173,7 +171,6 @@ public class GameManager : MonoBehaviour
     public void FinishText(String l){
         dialogText.text = l;
         StopAllCoroutines();
->>>>>>> upstream/main
     }
 
     public void PauseGame(){
