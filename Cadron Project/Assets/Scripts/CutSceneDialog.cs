@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class CutSceneDialog : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class CutSceneDialog : MonoBehaviour
     public GameObject nextButton;
     public TextMeshProUGUI nexttext;
 
+    public bool speaking = false;
     public void nextClick(){
+<<<<<<< HEAD
         if(line >= lines.Length - 1)
         {
         GameManager.Instance.playerBusy(false);
@@ -32,6 +35,31 @@ public class CutSceneDialog : MonoBehaviour
             GameManager.Instance.DialogShow(lines[line]); 
             //StartCoroutine(WaitingForNext());            
         }        
+=======
+        if(GameManager.Instance.CheckTextDone(lines[line])){
+            if(line >= lines.Length - 1)
+            {
+            GameManager.Instance.EndCutscene();
+            speaking = false;
+            }
+            else{
+                line += 1;
+                if(line == (lines.Length - 1)){
+                // set button text to done
+                nexttext.text = "Done";
+                }
+                backButton.SetActive(true);
+            // nextButton.SetActive(false);
+                GameManager.Instance.DialogShow(lines[line]); 
+                //StartCoroutine(WaitingForNext());
+                
+                
+            }
+        }
+        else{
+            GameManager.Instance.FinishText(lines[line]);
+        }    
+>>>>>>> upstream/main
     }
 
     public void done(string nextscene) {
@@ -57,14 +85,25 @@ public class CutSceneDialog : MonoBehaviour
         backButton.SetActive(false);
         charactername.text = name;
         characterportrait.GetComponent<Image>().overrideSprite = portrait;
+        speaking = true;
+        StartCoroutine(WaitingForNext());
     }
 
-    //IEnumerator WaitingForNext()
-    //{
-       // yield return new WaitForSeconds(1);
-        //nextButton.SetActive(true);
-        //backButton.SetActive(true);
-    //}
+    IEnumerator WaitingForNext()
+    {
+        while(speaking){
+            if(Input.GetKeyDown(KeyCode.E)){
+                if(GameManager.Instance.CheckTextDone(lines[line])){
+                    nextClick();
+                }
+                else{
+                    GameManager.Instance.FinishText(lines[line]);
+                }
+            }
+            yield return null;
+        }
+       
+    }
     
     // Start is called before the first frame update
     void Start()
