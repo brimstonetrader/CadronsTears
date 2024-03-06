@@ -67,7 +67,7 @@ public class CutSceneDialog : MonoBehaviour
     }
 
     IEnumerator WaitingForNext()
-    {
+    {   yield return new WaitForSeconds(0.5f);
         while(speaking){
             if(Input.GetKeyDown(KeyCode.E)){
                 if(GameManager.Instance.CheckTextDone(lines[line])){
