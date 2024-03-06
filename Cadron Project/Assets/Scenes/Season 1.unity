@@ -609,14 +609,9 @@ Transform:
   m_LocalPosition: {x: 18.88847, y: -0.75445414, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-<<<<<<< HEAD
-  m_Children: []
-  m_Father: {fileID: 1501248186}
-=======
   m_Children:
   - {fileID: 1447233742}
   m_Father: {fileID: 0}
->>>>>>> upstream/main
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &85707767
 MonoBehaviour:
