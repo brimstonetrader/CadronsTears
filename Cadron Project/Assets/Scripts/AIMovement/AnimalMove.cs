@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using static WalkToClick;
 
 public class AnimalMove : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class AnimalMove : MonoBehaviour
 
     public GameObject target;
     public float speed;
-    public List<Transform> moveSpots;          //list of spots to move to
+    private List<Vector3> moveSpots;          //list of spots to move to
 
     private bool inSpot = false;                //boolean to check if the animal is in a spot
     private bool player = false;
@@ -23,6 +25,7 @@ public class AnimalMove : MonoBehaviour
 
     private SpriteRenderer rend;
     private int randomSpot;                     //number of patrol spots 
+    public Tilemap tilemap;
 
 
     void Start()
@@ -30,8 +33,46 @@ public class AnimalMove : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         rend = GetComponent<SpriteRenderer>();
+
+        TilemapCollider2D tilemapCollider = tilemap.GetComponent<TilemapCollider2D>();  
+        Vector2 tilemapCenter = tilemapCollider.bounds.center;
+        Vector2 tilemapExtents = tilemapCollider.bounds.extents;    
+
+        int l = (int)Mathf.Round(tilemapCenter.x - tilemapExtents.x);
+        int t = (int)Mathf.Round(tilemapCenter.y + tilemapExtents.y);
+        int r = (int)Mathf.Round(tilemapCenter.x + tilemapExtents.x);
+        int b = (int)Mathf.Round(tilemapCenter.y - tilemapExtents.y);
+
+        for (int x = 0; x < 4 * (r - l + 1); x++) {
+            for (int y = 0; y < 4 * (t - b + 1); y++) {
+                Vector3 v = new Vector3(x, y, 0f);
+                if (IsCellOccupied(v)) {
+                    moveSpots.Add(v); 
+                }
+            }
+        }         
+
         randomSpot = Random.Range(0, moveSpots.Count);
+                
     }
+
+    private bool IsCellOccupied(Vector3 cellCenter)
+    {
+        Vector3Int cellPosition = tilemap.WorldToCell(cellCenter);
+        (int, int)[] playersize = {(0,0), (0,-1), (1,0), (1,-1),(0,-2),(-1,-2) };
+        foreach ((int,int) ps in playersize) {
+            if (tilemap.HasTile(new Vector3Int(cellPosition.x + ps.Item1, cellPosition.y + ps.Item2, 0))) {
+                return true;
+            }
+            Collider2D[] near = Physics2D.OverlapCircleAll(cellCenter, 0.125f);
+            foreach (Collider2D n in near) {
+                if (n.CompareTag("NPC")) { 
+                    return true;  
+                }
+            }
+        } return false;
+    }
+
 
 
     private void Update()
@@ -48,10 +89,10 @@ public class AnimalMove : MonoBehaviour
             player = false;
         }
         rb.rotation = 0f;
-        if(moveSpots[spot].position.x < transform.position.x){
+        if(moveSpots[spot].x < transform.position.x){
             rend.flipX = true;
         }
-        else if(moveSpots[spot].position.x > transform.position.x){
+        else if(moveSpots[spot].x > transform.position.x){
             rend.flipX = false;
         }
 
@@ -59,7 +100,7 @@ public class AnimalMove : MonoBehaviour
         // animal selects a spot, and then increases its speed in that direction, without rotating Z
         if (inSpot == false)
         {
-            transform.position = Vector2.MoveTowards(transform.position, moveSpots[spot].position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, moveSpots[spot], speed * Time.deltaTime);
             anim.SetFloat("speed", speed);
             
         }
@@ -92,21 +133,21 @@ public class AnimalMove : MonoBehaviour
         }
         // if the animal collides with a spot that is in the List<Transform> of spots
         // it will activate the "inSpot" boolean and send the animator a speed of 0
-        if (coll.gameObject == moveSpots[spot].gameObject)
-        {
-            anim.SetFloat("speed", 0);
-            // wait ten seconds before activating the "inSpot" boolean
-            StartCoroutine(Wait10());
+        // if (coll.gameObject == moveSpots[spot].gameObject)
+        // {
+        //     anim.SetFloat("speed", 0);
+        //     // wait ten seconds before activating the "inSpot" boolean
+        //     StartCoroutine(Wait10());
 
-            inSpot = true;
-            anim.SetBool("inSpot", inSpot);
-        }
+        //     inSpot = true;
+        //     anim.SetBool("inSpot", inSpot);
+        // }
     }
 
     IEnumerator Wait10()
     {
         //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
     }
 
 }
