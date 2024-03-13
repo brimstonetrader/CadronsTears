@@ -173,7 +173,6 @@ private bool IsValidNeighbor((int, int) n)
             }
         }
         else { 
-            transform.position = Vector3.MoveTowards(transform.position, transform.position, 1);
             PlayerMovement.SetHorizontal(0); 
             PlayerMovement.SetVertical(0); 
         }

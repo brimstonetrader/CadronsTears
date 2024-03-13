@@ -34,8 +34,7 @@ public class Arrow : MonoBehaviour
     public void Visible(bool b) { here = b; }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (people.Count > 0) { current = people[0]; }
         else { current = null; }
         playerpos = player.transform.position;
@@ -65,6 +64,7 @@ public class Arrow : MonoBehaviour
                     clickCutsceneScript.OnMouseEnter(); 
                     if (mouseExit) {
                        clickCutsceneScript.OnMouseExit(); 
+                       mouseExit = false;
                     }
                 }
         }

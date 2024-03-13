@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, bool> letters;
     private bool gamePaused = false;
     private bool raiseLower = false;
-    private bool busy;
+    public bool busy;
     private int tentscene;
     private Animator animator;
 
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     public void playerBusy(bool b) {
         if (player != null) {
             player.GetComponent<PlayerMovement>().SetIdle(b);
-            busy = true;  
+            busy = b;  
             if (b) { 
                 animator.SetFloat("horizontal", 0);
                 animator.SetFloat("vertical",   0);
@@ -70,7 +70,6 @@ public class GameManager : MonoBehaviour
     }
 
     public bool isBusy () { return busy; }
-    public void setBusy (bool b) { busy = b; }
 
 
     public void ClearLetters(){
@@ -124,7 +123,7 @@ public class GameManager : MonoBehaviour
     }
     public void DialogShow(string text) {
         dialogBox.SetActive(true);
-        setBusy(true);
+        playerBusy(true);
         StopAllCoroutines();
         StartCoroutine(TypeText(text));
     }
@@ -138,7 +137,7 @@ public class GameManager : MonoBehaviour
 
     public void DialogHide(){
         dialogBox.SetActive(false);
-        setBusy(false);
+        playerBusy(false);
         Arrow arrow = player.transform.GetChild(0).GetComponent<Arrow>();
         arrow.itsMouseExit();
     }
@@ -164,6 +163,13 @@ public class GameManager : MonoBehaviour
          HideButtons();     
          }
     //         Time.timeScale = 0f;
+    }
+    public bool CheckTextDone(String l){
+        return dialogText.text.Equals(l);
+    }
+    public void FinishText(String l){
+        dialogText.text = l;
+        StopAllCoroutines();
     }
 
     public void PauseGame(){
