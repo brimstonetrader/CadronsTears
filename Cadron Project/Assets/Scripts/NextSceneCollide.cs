@@ -9,6 +9,12 @@ public class NextSceneCollide : MonoBehaviour
     public int whichscene;
     public string requiredletter;
 
+    public GameObject icon;
+    void Start()
+    {
+        icon = gameObject.transform.Find("Icon").gameObject;
+    }
+
     public void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.CompareTag("Player"))
@@ -20,6 +26,16 @@ public class NextSceneCollide : MonoBehaviour
             Debug.Log("Player has exited the trigger");
             GameManager.Instance.StartTentscene(whichscene, nextscene);
             }
+        }
+    }
+
+    void Update()
+    {
+        if(GameManager.Instance.IsLetterDelivered(requiredletter)){
+            icon.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else{
+            icon.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 

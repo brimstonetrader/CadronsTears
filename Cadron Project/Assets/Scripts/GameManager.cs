@@ -165,6 +165,13 @@ public class GameManager : MonoBehaviour
          }
     //         Time.timeScale = 0f;
     }
+    public bool CheckTextDone(String l){
+        return dialogText.text.Equals(l);
+    }
+    public void FinishText(String l){
+        dialogText.text = l;
+        StopAllCoroutines();
+    }
 
     public void PauseGame(){
         gamePaused = true;
