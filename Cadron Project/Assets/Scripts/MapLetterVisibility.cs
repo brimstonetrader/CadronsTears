@@ -12,7 +12,7 @@ public class MapLetterVisibility : MonoBehaviour
     void Start()
     {
         lettername = gameObject.transform.parent.gameObject.name;
-        Debug.Log(lettername);
+        //Debug.Log(lettername);
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
