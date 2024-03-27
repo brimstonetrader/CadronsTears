@@ -518,9 +518,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charname: Alexander McFarland
   dialogLines:
-  - Thomas Nuttall
-  - Tavern
-  - Information
+  - 'Thomas Nuttall returned on December 18th, 1819. He had much to say about the
+    Cadron Settlement:'
+  - 'The only tavern, very ill provided, was consequently crowded with all sorts
+    of company. '
+  - It contained only two tenantable rooms, built of logs, with hundreds of crevices
+    still left open, notwithstanding the severity of the season.
+  - Every reasonable and rational amusement appeared here to be swallowed up in dram-drinking,
+    jockeying, and gambling;
+  - ' even our landlord, in defiance of the law, was often the ring-leader of what
+    it was his duty to suppress.'
   whichTentScene: 3
   portrait: {fileID: 21300000, guid: 9474d72176f8a164685312d24a59a6d3, type: 3}
   picture: {fileID: 179568018}
@@ -2199,6 +2206,7 @@ MonoBehaviour:
   dialogText: {fileID: 0}
   curtain: {fileID: 0}
   canvas: {fileID: 0}
+  creditsmenu: {fileID: 0}
   player: {fileID: 707959630}
 --- !u!4 &1226805781
 Transform:
@@ -2481,6 +2489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curtain: {fileID: 58787202}
   box: {fileID: 1764391365}
+  credits: {fileID: 0}
   text: {fileID: 635208663}
 --- !u!114 &1261289899
 MonoBehaviour:
