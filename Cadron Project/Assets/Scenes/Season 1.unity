@@ -626,7 +626,7 @@ MonoBehaviour:
   nextscene: Season 2
   whichscene: 0
   requiredletter: Lydia McFarland
-  icon: {fileID: 0}
+  icon: {fileID: 1447233741}
 --- !u!61 &85707768
 BoxCollider2D:
   m_ObjectHideFlags: 0
