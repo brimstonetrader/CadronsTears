@@ -9,14 +9,24 @@ public class CanvasScript : MonoBehaviour
     public GameObject curtain;
 
     public GameObject box;
+    public GameObject credits;
     public TextMeshProUGUI text;
     void Awake(){
         if (GameManager.Instance.canvas == null){
             GameManager.Instance.canvas = gameObject;
-            GameManager.Instance.curtain = curtain;
-            GameManager.Instance.dialogBox = box;
-            GameManager.Instance.dialogText = text;
-    
+            if(curtain != null){
+                GameManager.Instance.curtain = curtain;    
+            }
+            
+            if(box != null){
+                GameManager.Instance.dialogBox = box;    
+            }
+            if(text != null){
+                GameManager.Instance.dialogText = text;    
+            }
+            if(credits != null){
+                GameManager.Instance.creditsmenu = credits;    
+            }
         }
     }
     

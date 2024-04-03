@@ -15,6 +15,7 @@ public class CutSceneDialog : MonoBehaviour
     public GameObject backButton;
     public GameObject nextButton;
     public TextMeshProUGUI nexttext;
+    
 
     public bool speaking = false;
     public void nextClick(){
@@ -57,6 +58,7 @@ public class CutSceneDialog : MonoBehaviour
             }
         }
     }
+    
     public void StartCutscene(string name, Sprite portrait){
         GameManager.Instance.playerBusy(true); 
         line = 0;
@@ -71,7 +73,7 @@ public class CutSceneDialog : MonoBehaviour
     }
 
     IEnumerator WaitingForNext()
-    {
+    {   yield return new WaitForSeconds(0.5f);
         while(speaking){
             if(Input.GetKeyDown(KeyCode.E)){
                 if(GameManager.Instance.CheckTextDone(lines[line])){

@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI dialogText;
     public GameObject curtain;
     public GameObject canvas;
+
+    public GameObject creditsmenu;
     public GameObject player;
     private Dictionary<string, bool> letters;
     private bool gamePaused = false;
@@ -185,8 +187,12 @@ public class GameManager : MonoBehaviour
     public void EndCutscene(){
         // if the scenes name is cutscene, then transition to the Season2 scene here
         if (SceneManager.GetActiveScene().name == "Cutscene") { 
-            if (nextscene == null) {ChangeScene("Season 2");} 
-            else {ChangeScene(nextscene);}}
+            if(nextscene != "Credits"){ChangeScene(nextscene); }
+            else{
+                ChangeScene("Menu");
+                StartCoroutine(WaitforCreditsMenu());
+            }
+        }
         else{ShowButtons();}
         DialogHide();
         gamePaused = false;
@@ -197,7 +203,12 @@ public class GameManager : MonoBehaviour
             newletter = false;
         }
     //        Time.timeScale = 1f;
-
+    }
+    public IEnumerator WaitforCreditsMenu(){
+        while(!creditsmenu){
+            yield return null;    
+        }
+        creditsmenu.SetActive(true);
     }
 
     public bool IsPaused(){
