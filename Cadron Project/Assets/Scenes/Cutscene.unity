@@ -1809,7 +1809,7 @@ MonoBehaviour:
   - John McElmurry had built a blockhouse to be used for a residence, tavern, and
     protection of his fur trading.
   - A replica of the blockhouse still stands today at Cadron Settlement Park.
-  whichTentScene: 3
+  whichTentScene: 2
   portrait: {fileID: 21300000, guid: 9474d72176f8a164685312d24a59a6d3, type: 3}
   picture: {fileID: 179568018}
 --- !u!224 &1022692942
@@ -2208,6 +2208,7 @@ MonoBehaviour:
   canvas: {fileID: 0}
   creditsmenu: {fileID: 0}
   player: {fileID: 707959630}
+  busy: 0
 --- !u!4 &1226805781
 Transform:
   m_ObjectHideFlags: 0
