@@ -20,18 +20,19 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, bool> letters;
     private bool gamePaused = false;
     private bool raiseLower = false;
+    public bool busy;
     private int tentscene;
+    private Animator animator;
 
     private String nextscene;
     private bool newletter;
 
-     void Awake(){
+    void Awake(){
         if (Instance == null){
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
         } else {
         Destroy(gameObject);
-    }
+        }
     }
 
     public bool IsLetterDelivered(string key){
@@ -53,6 +54,26 @@ public class GameManager : MonoBehaviour
         letters.Add(k, false);
         newletter = true;
     }
+
+    public void playerBusy(bool b) {
+        if (player != null) {
+            player.GetComponent<PlayerMovement>().SetIdle(b);
+            busy = b;  
+            if (b) { 
+                animator.SetFloat("horizontal", 0);
+                animator.SetFloat("vertical",   0);
+                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll; 
+            }
+            else   { 
+                Animator animator = player.GetComponent<Animator>(); 
+                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation; 
+            }
+        }
+    }
+
+    public bool isBusy () { return busy; }
+
+
     public void ClearLetters(){
         letters = new Dictionary<string, bool>();
 
@@ -104,6 +125,7 @@ public class GameManager : MonoBehaviour
     }
     public void DialogShow(string text) {
         dialogBox.SetActive(true);
+        playerBusy(true);
         StopAllCoroutines();
         StartCoroutine(TypeText(text));
     }
@@ -117,6 +139,9 @@ public class GameManager : MonoBehaviour
 
     public void DialogHide(){
         dialogBox.SetActive(false);
+        playerBusy(false);
+        Arrow arrow = player.transform.GetChild(0).GetComponent<Arrow>();
+        arrow.itsMouseExit();
     }
 
     public void ShowButtons(){
@@ -139,7 +164,6 @@ public class GameManager : MonoBehaviour
          if(!(SceneManager.GetActiveScene().name == "Cutscene")){
          HideButtons();     
          }
-         
     //         Time.timeScale = 0f;
     }
     public bool CheckTextDone(String l){
@@ -205,6 +229,8 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        animator = player.GetComponent<Animator>(); 
+        busy = false;
         letters = new Dictionary<string, bool>();
     }
 

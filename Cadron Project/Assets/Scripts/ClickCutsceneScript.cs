@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,14 +11,18 @@ public class ClickCutsceneScript : MonoBehaviour
     public Sprite portrait;
     public Texture2D cursortexture;
     private bool canStartDialog = false;
+    public Arrow arrow;
 
     public void OnMouseEnter(){
         if(GameManager.Instance.IsPaused() == false){
-        Cursor.SetCursor(cursortexture, Vector2.zero, CursorMode.Auto);
+            arrow.Visible(false);
+            Cursor.SetCursor(cursortexture, Vector2.zero, CursorMode.Auto);
         }
     }
     public void OnMouseDown(){
         if(GameManager.Instance.IsPaused() == false){
+           arrow.Remove(charname);
+           arrow.Visible(false);
            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
            letterdialog.SetDialog();
            GameManager.Instance.ToCutscene(dialogLines, charname, portrait);
@@ -26,8 +31,10 @@ public class ClickCutsceneScript : MonoBehaviour
         
     }
 
+
     public void OnMouseExit(){
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        arrow.Visible(true);
     }
     public void OnCollisionEnter2D(Collision2D collision) {
         if (collision.rigidbody.gameObject.CompareTag("Player")) {
@@ -63,6 +70,5 @@ public class ClickCutsceneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
