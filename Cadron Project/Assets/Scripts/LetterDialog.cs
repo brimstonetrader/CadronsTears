@@ -20,16 +20,16 @@ public class LetterDialog : MonoBehaviour
     public void SetDialog(){
         if(receivesLetter){
             if(GM.HaveLetter(charname)){
-                if(!GM.IsLetterDelivered(dialogScript.charname)){
-                dialogScript.dialogLines = deliverLetterDialog;
+                if (!GM.IsLetterDelivered(dialogScript.charname)) {
+                    dialogScript.dialogLines = deliverLetterDialog;
                 }
-                else{
-                dialogScript.dialogLines = afterletterdialog;
+                else {
+                    dialogScript.dialogLines = afterletterdialog;
                 }
             }
         }
         
-        else{
+        else {
             if(GM.HaveLetter(sendsletterto)){
                 dialogScript.dialogLines = afterletterdialog;
             }
@@ -38,15 +38,15 @@ public class LetterDialog : MonoBehaviour
     }
     public void UpdateLetter(){
         if(receivesLetter){
-           if(GM.HaveLetter(charname)){
-            if(!GM.IsLetterDelivered(charname)){
-                GM.UpdateLetterStatus(charname);
-                if(!GM.HaveLetter(sendsletterto) && sendsLetter){
-                  GM.AddLetter(sendsletterto);  
+            if(GM.HaveLetter(charname)){
+                if(!GM.IsLetterDelivered(charname)){
+                    GM.UpdateLetterStatus(charname);
+                    if(!GM.HaveLetter(sendsletterto) && sendsLetter){
+                      GM.AddLetter(sendsletterto);  
+                    }
                 }
-            }
             } 
-            else if (sendbeforereceive && !GM.HaveLetter(sendsletterto)){
+            else if (sendbeforereceive && !GM.HaveLetter(sendsletterto)) {
                 GM.AddLetter(sendsletterto);
             }
         }

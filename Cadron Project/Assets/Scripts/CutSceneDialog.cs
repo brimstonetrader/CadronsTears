@@ -42,21 +42,27 @@ public class CutSceneDialog : MonoBehaviour
             GameManager.Instance.FinishText(lines[line]);
         }    
     }
+
+    public void done(string nextscene) {
+        GameManager.Instance.ChangeScene(nextscene);
+    }
+
     public void backClick(){
         if(line > 0){
-            line --;
+            line--;
             GameManager.Instance.DialogShow(lines[line]);
             nexttext.text = "Next";
-            if(line == 0){
+            if (line == 0) {
                 backButton.SetActive(false);
             }
         }
     }
     public void StartCutscene(string name, Sprite portrait){
+        GameManager.Instance.playerBusy(true); 
         line = 0;
-       if(lines.Length > 1){
-        nexttext.text = "Next";
-       }
+        if(lines.Length > 1){
+            nexttext.text = "Next";
+        }
         backButton.SetActive(false);
         charactername.text = name;
         characterportrait.GetComponent<Image>().overrideSprite = portrait;
@@ -89,6 +95,10 @@ public class CutSceneDialog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (nextButton.activeSelf) {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                nextClick();
+            }
+        }
     }
 }
