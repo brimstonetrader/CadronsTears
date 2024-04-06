@@ -30,6 +30,11 @@ public class PlayerMovement : MonoBehaviour
         // walking = GetComponent<AudioSource>();
     }
     
+    /**void Awake(){
+        if(GameManager.Instance.player == null){
+            GameManager.Instance.player = gameObject;
+        }
+    }**/
 
 
     // Update is called once per frame

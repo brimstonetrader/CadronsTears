@@ -126,7 +126,8 @@ public class GameManager : MonoBehaviour
     }
     public void DialogShow(string text) {
         dialogBox.SetActive(true);
-        playerBusy(true);
+        //playerBusy(true);
+        busy = true;
         StopAllCoroutines();
         StartCoroutine(TypeText(text));
     }
@@ -140,7 +141,8 @@ public class GameManager : MonoBehaviour
 
     public void DialogHide(){
         dialogBox.SetActive(false);
-        playerBusy(false);
+        //playerBusy(false);
+        busy = false;
         Arrow arrow = player.transform.GetChild(0).GetComponent<Arrow>();
         arrow.itsMouseExit();
     }
