@@ -143,6 +143,7 @@ public class GameManager : MonoBehaviour
         dialogBox.SetActive(false);
         //playerBusy(false);
         busy = false;
+        gamePaused = false;
         Arrow arrow = player.transform.GetChild(0).GetComponent<Arrow>();
         arrow.itsMouseExit();
     }
@@ -232,7 +233,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        animator = player.GetComponent<Animator>(); 
+        //animator = player.GetComponent<Animator>(); 
         busy = false;
         letters = new Dictionary<string, bool>();
     }
