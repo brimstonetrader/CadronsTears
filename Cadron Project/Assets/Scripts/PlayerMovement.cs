@@ -30,12 +30,18 @@ public class PlayerMovement : MonoBehaviour
         // walking = GetComponent<AudioSource>();
     }
     
+    /**void Awake(){
+        if(GameManager.Instance.player == null){
+            GameManager.Instance.player = gameObject;
+        }
+    }**/
 
 
     // Update is called once per frame
     void Update()
     {
-        if(!idle && GameManager.Instance.IsPaused() == false && !GameManager.Instance.isBusy()) {
+        if(GameManager.Instance.IsPaused() == false && !GameManager.Instance.isBusy()) {
+            body.constraints = RigidbodyConstraints2D.FreezeRotation;
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
             if (h_path != 0) { horizontal = h_path; }
@@ -62,7 +68,8 @@ public class PlayerMovement : MonoBehaviour
         horizontal -= h_path;
         vertical -= v_path;
         }
-        else { horizontal = 0; vertical = 0; }
+        else { horizontal = 0; vertical = 0; 
+        body.constraints = RigidbodyConstraints2D.FreezeAll; }
     }
     public void SetIdle(bool b) { idle = b; }
 
@@ -70,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     public static void SetVertical(float v) { v_path = v; }
 
     void FixedUpdate() {
-        if (!idle && (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f)) {
+        if ( (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f)) {
             animator.SetFloat("horizontal", Mathf.Round(5*horizontal)/5);
             animator.SetFloat("vertical", Mathf.Round(5*vertical)/5);
             horizontal *= moveLimiter;
