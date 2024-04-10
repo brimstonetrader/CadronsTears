@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     void Awake(){
         if (Instance == null){
             Instance = this;
+            DontDestroyOnLoad(gameObject);  
         } else {
         Destroy(gameObject);
         }
@@ -125,7 +126,8 @@ public class GameManager : MonoBehaviour
     }
     public void DialogShow(string text) {
         dialogBox.SetActive(true);
-        playerBusy(true);
+        //playerBusy(true);
+        busy = true;
         StopAllCoroutines();
         StartCoroutine(TypeText(text));
     }
@@ -139,7 +141,9 @@ public class GameManager : MonoBehaviour
 
     public void DialogHide(){
         dialogBox.SetActive(false);
-        playerBusy(false);
+        //playerBusy(false);
+        busy = false;
+        gamePaused = false;
         Arrow arrow = player.transform.GetChild(0).GetComponent<Arrow>();
         arrow.itsMouseExit();
     }
@@ -229,7 +233,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        animator = player.GetComponent<Animator>(); 
+        //animator = player.GetComponent<Animator>(); 
         busy = false;
         letters = new Dictionary<string, bool>();
     }

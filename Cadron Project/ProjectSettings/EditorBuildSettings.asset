@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Road.unity
     guid: 9d2413efe7bc38c4da856f84766a204e
+  - enabled: 1
+    path: Assets/Scenes/Season 3.unity
+    guid: c9e135f190db2714ea2e848e8bf49fac
   m_configObjects: {}

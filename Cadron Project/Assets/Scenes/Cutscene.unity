@@ -2208,7 +2208,6 @@ MonoBehaviour:
   canvas: {fileID: 0}
   creditsmenu: {fileID: 0}
   player: {fileID: 707959630}
-  busy: 0
 --- !u!4 &1226805781
 Transform:
   m_ObjectHideFlags: 0
